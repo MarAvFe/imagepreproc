@@ -26,7 +26,6 @@ public class Ecualización {
 	public static void main(String args[]) throws Exception{
 		System.out.println("Calling method to print...");
 		HistogramEqualizationColorGray("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\celulas.jpg");
-		//HistogramEqualizationTest();
 		Ecualización o = new Ecualización();
 		o.HistogramEqualizationTest();
 	}
