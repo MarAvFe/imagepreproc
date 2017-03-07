@@ -3,6 +3,8 @@
  */
 package paquete;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -19,12 +21,15 @@ public class Ecualización {
 	 * The main method.
 	 *
 	 * @param args the arguments
+	 * @throws Exception 
 	 */
-	public static void main(String args[]){
+	public static void main(String args[]) throws Exception{
 		System.out.println("Calling method to print...");
 		HistogramEqualizationColorGray("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\celulas.jpg");
+		//HistogramEqualizationTest();
+		Ecualización o = new Ecualización();
+		o.HistogramEqualizationTest();
 	}
-	
 	public static void HistogramEqualizationColorGray(String imagesource) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		Mat img = Imgcodecs.imread(imagesource);//se lee la imagen 
@@ -41,9 +46,9 @@ public class Ecualización {
 	 * @return void
 	 */
 	@Test
-	public static void HistogramEqualizationTest(String imagesource) {
+	public void HistogramEqualizationTest() throws Exception {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat img = Imgcodecs.imread(imagesource);//se lee la imagen 
+		Mat img = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\celulas.jpg");//se lee la imagen 
 		System.out.println("Hola aca llegue");
 		Imgproc.cvtColor(img, img,  Imgproc.COLOR_BGR2GRAY); //se pasa la imagen a escala de grises 
 		// convertir en escala de grises y ecualizar histograma
