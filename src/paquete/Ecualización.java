@@ -10,9 +10,9 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.CLAHE;
 import org.opencv.imgproc.Imgproc;
 /**
- * The Class ClaseDummy.
+ * La clase Ecualización.
  */
-public class ClaseDummy {
+public class Ecualización {
 	// Para solucionar los errores de que no exista el folder de src
 	
 	/**
@@ -36,22 +36,19 @@ public class ClaseDummy {
 		Imgcodecs.imwrite("celulas2new.png", img); // escribimos(creamos una nueva imagen con el clahe aplicado)
 	}
 	/**
-	 * Prueba division exitosa.
+	 * Prueba funcionamiento exitoso ecualización.
 	 *
-	 * @return the int
+	 * @return void
 	 */
 	@Test
-	public float pruebaDivisionExitosa(){
-		return 50 / 10;
-	}
-
-	/**
-	 * Prueba division fallida.
-	 *
-	 * @return the int
-	 */
-	@Test
-	public float pruebaDivisionFallida(){
-		return 2 / 0;
+	public static void HistogramEqualizationTest(String imagesource) {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Mat img = Imgcodecs.imread(imagesource);//se lee la imagen 
+		System.out.println("Hola aca llegue");
+		Imgproc.cvtColor(img, img,  Imgproc.COLOR_BGR2GRAY); //se pasa la imagen a escala de grises 
+		// convertir en escala de grises y ecualizar histograma
+		CLAHE clahe = Imgproc.createCLAHE(); //creamos el objeto de tipo clahe /
+		clahe.apply(img, img); //aplicamos el acualizador con el metodo apply
+		Imgcodecs.imwrite("celulas2new.png", img); // escribimos(creamos una nueva imagen con el clahe aplicado)
 	}
 }
