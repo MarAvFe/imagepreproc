@@ -25,15 +25,14 @@ public class Ecualización {
 	 */
 	public static void main(String args[]) throws Exception{
 		System.out.println("Calling method to print...");
-		HistogramEqualizationColorGray("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpeg"); 
+		HistogramEqualizationColorGray("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\celulas.jpg");
 		Ecualización o = new Ecualización();
 		o.HistogramEqualizationTest();
 	}
 	public static void HistogramEqualizationColorGray(String imagesource) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		Mat img = Imgcodecs.imread(imagesource);//se lee la imagen 
-		System.out.println("Hola aca lleguez");
-		System.out.println("Mat: " + img.dump());
+		System.out.println("Hola aca llegue");
 		Imgproc.cvtColor(img, img,  Imgproc.COLOR_BGR2GRAY); //se pasa la imagen a escala de grises 
 		// convertir en escala de grises y ecualizar histograma
 		CLAHE clahe = Imgproc.createCLAHE(); //creamos el objeto de tipo clahe /
@@ -48,7 +47,7 @@ public class Ecualización {
 	@Test
 	public void HistogramEqualizationTest() throws Exception {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat img = Imgcodecs.imread("C:\\Users\\Public\\Pictures\\Sample Pictures\\Koala.jpeg");//se lee la imagen 
+		Mat img = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\celulas.jpg");//se lee la imagen 
 		System.out.println("Hola aca llegue");
 		Imgproc.cvtColor(img, img,  Imgproc.COLOR_BGR2GRAY); //se pasa la imagen a escala de grises 
 		// convertir en escala de grises y ecualizar histograma
