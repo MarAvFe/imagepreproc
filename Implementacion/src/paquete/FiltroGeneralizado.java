@@ -11,15 +11,42 @@ public class FiltroGeneralizado {
 		// solo nos  sirve con 3x3
 		//getMatrix();
 		
-		filter(3, 3, 1, getMatrix());
+		getFixedImage(filter(3, 3, 1, getMatrix()));
+		
+		
 	}
 	
+	public static void getFixedImage(double[][] matrix){
+		try {
+			System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
+			
+			Mat source = Imgcodecs.imread("C:\\Users\\nroma\\Desktop\\fresa.jpg");
+			
+			
+			Mat destination = new Mat(source.rows(),source.cols(),source.type());
+			Imgproc.cvtColor(destination, destination, Imgproc.COLOR_BGR2GRAY,0);
+			
+			for(int i = 0; i< source.rows();i++){
+				for(int j = 0; j< source.cols();j++){
+					destination.put(i, j, matrix[i][j]);
+				}
+			}
+			
+			//Imgproc.GaussianBlur(source, destination,new Size(45,45), 0);
+			Imgcodecs.imwrite("OJALASIRVA.jpg", destination);
+
+		} catch (Exception e) {
+		System.out.println("Error: " + e.getMessage());
+		}
+	}
+	
+	 
 	// lee con opencv la imagen y convierte de mat a double[][]
 	public static double[][] getMatrix(){
 		
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat img = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma/photo.jpg");//se lee la imagen 
-		Imgproc.getGaussianKernel(2, 1);
+		Mat img = Imgcodecs.imread("C:\\Users\\nroma\\Desktop\\fresa.jpg");//se lee la imagen 
+		//Imgproc.getGaussianKernel(2, 1);
 		img.convertTo(img, CvType.CV_64FC3);
 		int size = (int) (img.total() * img.channels());
 		double[] temp = new double[size]; 
@@ -62,7 +89,7 @@ public class FiltroGeneralizado {
 	}
 	
 	
-	public static void filter(int K, int L, float sigma, double[][] imageMatrix){
+	public static double[][] filter(int K, int L, float sigma, double[][] imageMatrix){
 		
 		// int L = 3, K = 3;
 		//int x = 2, y = 2;
@@ -152,6 +179,7 @@ public class FiltroGeneralizado {
 			}
 			System.out.println();
 		}
+		return Ures;
 	}
 }
 

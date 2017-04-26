@@ -9,13 +9,12 @@ import javax.ws.rs.core.Response;
 public class ImageIO {
  
 	@GET
-	@Path("/{param}")
-	public Response getMsg(@PathParam("param") String msg) {
- 
-		String output = "Jersey say : " + msg;
- 
+	@Path("/testocv")
+	public Response tryocv() {
+		String[] args = {};
+		FiltroGeneralizado.main(args);
+		String output = "";
 		return Response.status(200).entity(output).build();
- 
 	}
  
 }
