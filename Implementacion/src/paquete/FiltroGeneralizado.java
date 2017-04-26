@@ -14,12 +14,11 @@ public class FiltroGeneralizado {
 		filter(3, 3, 1, getMatrix());
 	}
 	
-	//temporal
 	// lee con opencv la imagen y convierte de mat a double[][]
 	public static double[][] getMatrix(){
 		
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat img = Imgcodecs.imread("C:\\Users\\nroma\\Desktop\\gato.jpeg");//se lee la imagen 
+		Mat img = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma/photo.jpg");//se lee la imagen 
 		Imgproc.getGaussianKernel(2, 1);
 		img.convertTo(img, CvType.CV_64FC3);
 		int size = (int) (img.total() * img.channels());
@@ -136,14 +135,14 @@ public class FiltroGeneralizado {
 					for(int j=ylmin; j < ylmax+1; j++){
 						result += U[i][j] * gaussKernel[i%gaussKernel.length][j%gaussKernel.length];
 						// AQUI ES LA BRONCA WE
-						//System.out.print(U[i][j] + " ");
+						System.out.print(U[i][j] + " ");
 					}
-					//System.out.println();
+					System.out.println();
 				}
-				//System.out.println(result);
+				System.out.println(result);
 				Ures[x][y] = result;	
 			}
-			//System.out.println();
+			System.out.println();
 		}
 		
 		System.out.println("Matriz resultado");
