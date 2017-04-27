@@ -41,31 +41,36 @@ public class ImageIO {
 	public Response processImage( 
 			@FormParam("imgStr") String imgCode, 
 			@FormParam("imgTitle") String imgTitle) {
-		String imgType = imgCode.split(",")[0].split("/")[1].split(";")[0];
-		String base64Image = imgCode.split(",")[1];
-		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
-		String result = "data:image/" + imgType + ";base64,";
-		BufferedImage img = null;
-		try {
-			img = javax.imageio.ImageIO.read(new ByteArrayInputStream(imageBytes));
-
-			// Trabajar con la imagen
-			
-			result += encodeToString(img, imgType);
-		} catch (IOException e) {
-			e.printStackTrace();
+		String[] imgs = imgCode.split("0o0o0o0");
+		String output = "<html><body>";
+		for (int i = 0; i < imgs.length; i++){
+			String imgType = imgs[i].split(",")[0].split("/")[1].split(";")[0];
+			String base64Image = imgs[i].split(",")[1];
+			byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+			String result = "data:image/" + imgType + ";base64,";
+			BufferedImage img = null;
+			try {
+				img = javax.imageio.ImageIO.read(new ByteArrayInputStream(imageBytes));
+				
+				// Trabajar con la imagen
+				
+				result += encodeToString(img, imgType);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+			output +=  
+					"<h3>Image title:</h3> " + imgTitle 
+					+ "<br><h3>Image Type:</h3> " + imgType  
+					+ "<br><h3>Processed img:</h3> <img src=\"" + result + "\" /><hr>";
+					//"<br><h3>Recieved img:</h3> <img src=\"" + imgCode + "\" />" +
+				//"<br><h3>Correct DecodeEncode:</h3> " + String.valueOf(imgCode.equals(result)) + 
+				//"<br><h3>DecodeEncode Result:</h3> " + result + 
+				//"<br><h3>Image Only:</h3> " + base64Image + 
+				// + "<br><h3>Received Image Code:</h3> " + imgs.length
+				// + "<br><h3>Received Image Code:</h3> " + imgCode ;
+			//showImage(img);
 		}
-		String output = "<html><body>" + 
-				"<h3>Image title:</h3> " + imgTitle + 
-				"<br><h3>Image Type:</h3> " + imgType +  
-				"<br><h3>Processed img:</h3> <img src=\"" + result + "\" />" +
-				/*"<br><h3>Recieved img:</h3> <img src=\"" + imgCode + "\" />" +
-				"<br><h3>Correct DecodeEncode:</h3> " + String.valueOf(imgCode.equals(result)) + 
-				"<br><h3>DecodeEncode Result:</h3> " + result + 
-				"<br><h3>Image Only:</h3> " + base64Image + 
-				"<br><h3>Received Image Code:</h3> " + imgCode + */
-				"</html></body>";
-		// showImage(img);
+		output += "</html></body>";
 		return Response.status(200).entity(output).build();
 	}
 

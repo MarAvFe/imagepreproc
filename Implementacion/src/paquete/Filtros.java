@@ -1,17 +1,17 @@
 package paquete;
 
-import org.junit.Test;
-
 public class Filtros
 {
 	
 	public static void main( String[] args ){
-		filter();
+		/*filter();
 		Filtros fl = new Filtros();
-		fl.filterTest();
+		fl.filterTest();*/
+		String s = "asd$sdf";
+		System.out.println(s.split("$"));
 	}
 	
-	public static void filter(){
+	/*public static void filter(){
 		
 		int[][] U = {
 				{0,0,0,0,0,0,0},
@@ -87,7 +87,7 @@ public class Filtros
 				
 				System.out.print("\t\t" + result);
 				System.out.println();
-				*/
+				
 			}
 			//System.out.println();
 		}
@@ -178,7 +178,7 @@ public void filterTest(){
 				
 				System.out.print("\t\t" + result);
 				System.out.println();
-				*/
+				
 			}
 			//System.out.println();
 		}
@@ -190,5 +190,5 @@ public void filterTest(){
 			}
 			System.out.println();
 		}
-	}
+	}*/
 }
