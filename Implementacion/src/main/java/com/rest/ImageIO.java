@@ -23,9 +23,11 @@ import sun.misc.BASE64Encoder;
 public class ImageIO {
 
 	@GET
-	@Path("/{param}")
-	public Response getMsg(@PathParam("param") String msg) {
-		String output = "Jersey say : " + msg;
+	@Path("/testocv")
+	public Response tryocv() {
+		String[] args = {};
+		FiltroGeneralizado.main(args);
+		String output = "";
 		return Response.status(200).entity(output).build();
 	}
 
@@ -38,8 +40,8 @@ public class ImageIO {
 
 	@POST
 	@Path("/processImage")
-	public Response processImage( 
-			@FormParam("imgStr") String imgCode, 
+	public Response processImage(
+			@FormParam("imgStr") String imgCode,
 			@FormParam("imgTitle") String imgTitle) {
 		String[] imgs = imgCode.split("0o0o0o0");
 		String output = "<html><body>";
@@ -51,21 +53,21 @@ public class ImageIO {
 			BufferedImage img = null;
 			try {
 				img = javax.imageio.ImageIO.read(new ByteArrayInputStream(imageBytes));
-				
+
 				// Trabajar con la imagen
-				
+
 				result += encodeToString(img, imgType);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}			
-			output +=  
-					"<h3>Image title:</h3> " + imgTitle 
-					+ "<br><h3>Image Type:</h3> " + imgType  
+			}
+			output +=
+					"<h3>Image title:</h3> " + imgTitle
+					+ "<br><h3>Image Type:</h3> " + imgType
 					+ "<br><h3>Processed img:</h3> <img src=\"" + result + "\" /><hr>";
 					//"<br><h3>Recieved img:</h3> <img src=\"" + imgCode + "\" />" +
-				//"<br><h3>Correct DecodeEncode:</h3> " + String.valueOf(imgCode.equals(result)) + 
-				//"<br><h3>DecodeEncode Result:</h3> " + result + 
-				//"<br><h3>Image Only:</h3> " + base64Image + 
+				//"<br><h3>Correct DecodeEncode:</h3> " + String.valueOf(imgCode.equals(result)) +
+				//"<br><h3>DecodeEncode Result:</h3> " + result +
+				//"<br><h3>Image Only:</h3> " + base64Image +
 				// + "<br><h3>Received Image Code:</h3> " + imgs.length
 				// + "<br><h3>Received Image Code:</h3> " + imgCode ;
 			//showImage(img);
@@ -97,7 +99,7 @@ public class ImageIO {
         }
         return imageString;
     }
-    
+
     public void showImage(BufferedImage img){
     	JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
@@ -105,7 +107,7 @@ public class ImageIO {
         frame.pack();
         frame.setVisible(true);
     }
-    
+
     /*public Mat bufToMat(BufferedImage img){
     	Mat mat = new Mat(img.getHeight(), img.getWidth(), CvType.CV_8UC3);
     	byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();

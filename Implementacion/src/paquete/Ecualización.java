@@ -37,7 +37,7 @@ public class Ecualización {
 		// convertir en escala de grises y ecualizar histograma
 		CLAHE clahe = Imgproc.createCLAHE(); //creamos el objeto de tipo clahe /
 		clahe.apply(img, img); //aplicamos el acualizador con el metodo apply
-		Imgcodecs.imwrite("celulas2new.png", img); // escribimos(creamos una nueva imagen con el clahe aplicado)
+		Imgcodecs.imwrite("celulas3new.png", img); // escribimos(creamos una nueva imagen con el clahe aplicado)
 	}
 	/**
 	 * Prueba funcionamiento exitoso ecualización.
