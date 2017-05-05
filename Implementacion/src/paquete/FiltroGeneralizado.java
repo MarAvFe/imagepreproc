@@ -1,8 +1,5 @@
 package paquete;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -46,7 +43,7 @@ public class FiltroGeneralizado {
 
 	}
 	
-	public static void getFixedImage(double[][][] matrix){
+	public static Mat getFixedImage(double[][][] matrix){
 		try {
 			System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 			
@@ -74,10 +71,12 @@ public class FiltroGeneralizado {
 			//namedWindow("",43);
 	//	showImage(toBufferedImage2(toBufferedImage1(destination)));
 			Imgcodecs.imwrite("OJALASIRVA.png", destination);
+			return destination;
 			
 		} catch (Exception e) {
 		System.out.println("Error: " + e.getMessage());
 		}
+		return null;
 	}
 	
 	
@@ -129,37 +128,63 @@ public class FiltroGeneralizado {
 	    }
 	 
 	// lee con opencv la imagen y convierte de mat a double[][]
-	public static double[][][] getMatrix(){
+		public static double[][][] getMatrix(){
+			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+			Mat img = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\photo.jpg",Imgcodecs.CV_LOAD_IMAGE_COLOR);//se lee la imagen 
+			//Imgproc.getGaussianKernel(2, 1);
 		
-		
-		
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat img = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\photo.jpg",Imgcodecs.CV_LOAD_IMAGE_COLOR);//se lee la imagen 
-		//Imgproc.getGaussianKernel(2, 1);
-	
-		img.convertTo(img, CvType.CV_64FC3);
-		int size = (int) (img.total() * img.channels());
-		double[] temp = new double[size]; 
-						
-		int columnas= img.cols();
-		int filas = img.rows();
-		
-		
-		double[][][] imageMatrix;
-		imageMatrix = new double[3][filas][columnas];
-		
-		for(int g = 0;g<3;g++) {
-			for(int i=0;i<filas;i++) {
-				for(int j=0;j<columnas;j++){ 
-					imageMatrix[g][i][j] = img.get(i,j)[g];
-					//	System.out.println(img.get(i, j).length);	
-					
-				}
-			}
+			img.convertTo(img, CvType.CV_64FC3);
+			int size = (int) (img.total() * img.channels());
+			double[] temp = new double[size]; 
+							
+			int columnas= img.cols();
+			int filas = img.rows();
 			
+			
+			double[][][] imageMatrix;
+			imageMatrix = new double[3][filas][columnas];
+			
+			for(int g = 0;g<3;g++) {
+				for(int i=0;i<filas;i++) {
+					for(int j=0;j<columnas;j++){ 
+						imageMatrix[g][i][j] = img.get(i,j)[g];
+						//	System.out.println(img.get(i, j).length);	
+						
+					}
+				}
+				
+			}
+			return imageMatrix;
 		}
-		return imageMatrix;
-	}
+		//recibe una matriz y la conveirte a double[][]
+		public static double[][][] getMatrix(Mat m){
+			System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+			Mat img = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\photo.jpg",Imgcodecs.CV_LOAD_IMAGE_COLOR);//se lee la imagen 
+			//Imgproc.getGaussianKernel(2, 1);
+		
+			img.convertTo(img, CvType.CV_64FC3);
+			int size = (int) (img.total() * img.channels());
+			double[] temp = new double[size]; 
+							
+			int columnas= img.cols();
+			int filas = img.rows();
+			
+			
+			double[][][] imageMatrix;
+			imageMatrix = new double[3][filas][columnas];
+			
+			for(int g = 0;g<3;g++) {
+				for(int i=0;i<filas;i++) {
+					for(int j=0;j<columnas;j++){ 
+						imageMatrix[g][i][j] = img.get(i,j)[g];
+						//	System.out.println(img.get(i, j).length);	
+						
+					}
+				}
+				
+			}
+			return imageMatrix;
+		}
 	
 	// solo hace con matriz cuadrada
 	// calcula el kernel con un tamaño y sigma dados
