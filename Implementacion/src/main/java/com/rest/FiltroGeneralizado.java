@@ -1,3 +1,4 @@
+package rest;
 
 
 import java.awt.FlowLayout;
@@ -27,7 +28,7 @@ public class FiltroGeneralizado {
 	}
 	
 	
-	public BufferedImage principal(BufferedImage imagen) {
+	public static BufferedImage principal(BufferedImage imagen) {
 		Mat m = bufToMat(imagen);
 		double [][][] img = getMatrix(m);
 		double [][][] filtermatrix = filter(3,3,1,img);
@@ -38,7 +39,7 @@ public class FiltroGeneralizado {
 	}
 	
 	 
-    public Mat bufToMat(BufferedImage img){
+    public static Mat bufToMat(BufferedImage img){
     	Mat mat = new Mat(img.getHeight(), img.getWidth(), CvType.CV_8UC3);
     	byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
     	mat.put(0, 0, pixels);
