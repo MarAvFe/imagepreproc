@@ -25,6 +25,13 @@
 			<scope>test</scope>
 		</dependency>
 
+	<!-- https://github.com/openpnp/opencv -->
+	<dependency>
+      <groupId>org.openpnp</groupId>
+      <artifactId>opencv</artifactId>
+      <version>3.2.0-1</version>
+    </dependency>
+
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-server</artifactId>
@@ -42,6 +49,7 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+				<version>3.6.1</version>
 			</plugin>
 		</plugins>
 	</build>

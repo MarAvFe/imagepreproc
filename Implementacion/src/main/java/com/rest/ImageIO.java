@@ -1,4 +1,4 @@
-package main.java.com.rest;
+package rest;
 
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
@@ -17,17 +17,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+
+import sun.applet.Main;
 import sun.misc.BASE64Encoder;
+
+// mvn install:install-file -Dfile=C:\opencv\build\java\opencv-320.jar -DgroupId=parma.org -DartifactId=opencv -Dversion=3.2.0 -Dpackaging=jar
 
 @Path("ImageIO")
 public class ImageIO {
 
 	@GET
-	@Path("/testocv")
-	public Response tryocv() {
-		String[] args = {};
-		FiltroGeneralizado.main(args);
-		String output = "";
+	@Path("/{param}")
+	public Response getMsg(@PathParam("param") String msg) {
+		String output = "Jersey say : " + msg;
 		return Response.status(200).entity(output).build();
 	}
 
@@ -51,12 +55,26 @@ public class ImageIO {
 			byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 			String result = "data:image/" + imgType + ";base64,";
 			BufferedImage img = null;
+			try{
+				nu.pattern.OpenCV.loadShared();
+			} catch (Exception f) {
+				System.out.println("ERR320 Classloader: " + this.getClass().getClassLoader());
+				try{
+					System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+				} catch (Exception g) {
+					System.out.println("ERRNAT Classloader: " + this.getClass().getClassLoader());
+				}
+			}
 			try {
+				//System.loadLibrary("opencv_java320");
 				img = javax.imageio.ImageIO.read(new ByteArrayInputStream(imageBytes));
 
 				// Trabajar con la imagen
+				BufferedImage bridge = rest.FiltroGeneralizado.principal(img);
 
-				result += encodeToString(img, imgType);
+
+
+				result += encodeToString(bridge, imgType);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -107,11 +125,4 @@ public class ImageIO {
         frame.pack();
         frame.setVisible(true);
     }
-
-    /*public Mat bufToMat(BufferedImage img){
-    	Mat mat = new Mat(img.getHeight(), img.getWidth(), CvType.CV_8UC3);
-    	byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-    	mat.put(0, 0, pixels);
-    	return mat;
-    }*/
-}
+   }
