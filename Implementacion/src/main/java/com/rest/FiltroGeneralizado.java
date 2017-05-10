@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.*;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * The Class FiltroGeneralizado.
@@ -26,6 +27,14 @@ public class FiltroGeneralizado {
 		double [][][] filtermatrix = filter(pSize,pSigma,img);
 		Mat withfilter = getFixedImage(filtermatrix);
 		BufferedImage buffer = mat2BufferedImage(withfilter) ;
+		return buffer;
+	}
+	
+	public static BufferedImage Bilateral(BufferedImage imagen, int pSize, int pSigma, int pSigma2) {
+		Mat m = bufToMat(imagen);
+		Mat dest = new Mat(m.rows(), m.cols(), m.type());
+		Imgproc.bilateralFilter(m, dest, pSize, pSigma, pSigma2);
+		BufferedImage buffer = mat2BufferedImage(dest) ;
 		return buffer;
 	}
 

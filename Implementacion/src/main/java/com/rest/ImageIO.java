@@ -48,6 +48,7 @@ public class ImageIO {
 			@FormParam("imgStr") String imgCode,
 			@FormParam("algorithmType") int algType,
 			@FormParam("sigmaGauss") int sigma,
+			@FormParam("sigmaBilateral") int sigmaB,
 			@FormParam("kernelSize") int kSize,
 			@FormParam("imgTitle") String imgTitle) {
 		String[] imgs = imgCode.split("0o0o0o0");
@@ -77,6 +78,9 @@ public class ImageIO {
 				switch(algType){
 					case 0:
 						bridge = rest.FiltroGeneralizado.principal(img, kSize, sigma);
+						break;
+					case 1:
+						bridge = rest.FiltroGeneralizado.Bilateral(img,kSize,sigma,sigmaB);
 						break;
 					default:
 						break;
