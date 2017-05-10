@@ -46,6 +46,9 @@ public class ImageIO {
 	@Path("/processImage")
 	public Response processImage(
 			@FormParam("imgStr") String imgCode,
+			@FormParam("algorithmType") int algType,
+			@FormParam("sigmaGauss") int sigma,
+			@FormParam("kernelSize") int kSize,
 			@FormParam("imgTitle") String imgTitle) {
 		String[] imgs = imgCode.split("0o0o0o0");
 		String output = "<html><body>";
@@ -70,9 +73,14 @@ public class ImageIO {
 				img = javax.imageio.ImageIO.read(new ByteArrayInputStream(imageBytes));
 
 				// Trabajar con la imagen
-				BufferedImage bridge = rest.FiltroGeneralizado.principal(img);
-
-
+				BufferedImage bridge = rest.FiltroGeneralizado.principal(img, kSize, sigma);
+				switch(algType){
+					case 0:
+						bridge = rest.FiltroGeneralizado.principal(img, kSize, sigma);
+						break;
+					default:
+						break;
+				}
 
 				result += encodeToString(bridge, imgType);
 			} catch (IOException e) {

@@ -27,12 +27,12 @@ public class FiltroGeneralizado {
 	}
 
 
-	public static BufferedImage principal(BufferedImage imagen) {
+	public static BufferedImage principal(BufferedImage imagen, int pSize, int pSigma) {
 		//System.out.println(java.library.path);
 		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		Mat m = bufToMat(imagen);
 		double [][][] img = getMatrix(m);
-		double [][][] filtermatrix = filter(3,1,img);
+		double [][][] filtermatrix = filter(pSize,pSigma,img);
 		Mat withfilter = getFixedImage(filtermatrix);
 		//System.out.println(withfilter.dump());
 		BufferedImage buffer = mat2BufferedImage(withfilter) ;
@@ -84,7 +84,7 @@ public class FiltroGeneralizado {
 	    return image;
 
 	}
-	
+
 	// convierte double[][][] to Mat
 	public static Mat getFixedImage(double[][][] matrix){
 		try {
@@ -264,9 +264,6 @@ public class FiltroGeneralizado {
 
 
 	public static double[][][] filter(int K, float sigma, double[][][] imageMatrix){
-
-		// int L = 3, K = 3;
-		//int x = 2, y = 2;
 		double [][][] matresult = imageMatrix;
 		for(int g = 0; g<3;g++) {
 
@@ -289,23 +286,21 @@ public class FiltroGeneralizado {
 			}
 
 			System.out.println("Aplicando filtro...");
-			for(int x=1; x < U.length-1; x++){
-				for(int y=1; y < U[0].length-1; y++){
-					//System.out.print(U[x][y] + "\t");
+			int var = (int)Math.floor((K-1)/2);
+			for(int x=var; x < U.length-var; x++){
+				for(int y=var; y < U[0].length-var; y++){
+					// System.out.print(U[x][y] + "\t");
 					int result = 0;
 					int
-					xkmin = x-(int)Math.floor((K-1)/2),
-					xkmax = x+(int)Math.floor((K-1)/2),
-					ylmin = y-(int)Math.floor((K-1)/2),
-					ylmax = y+(int)Math.floor((K-1)/2);
+					xkmin = x-var,
+					xkmax = x+var,
+					ylmin = y-var,
+					ylmax = y+var;
 					// filtro
-					int o = 0;
 					for(int i=xkmin; i < xkmax+1; i++){			// se desliza F sobre U
 						for(int j=ylmin; j < ylmax+1; j++){
-							//result += U[i+x][j+y] * gaussKernel[i][j];//i%gaussKernel.length
 						   result += U[i][j] * gaussKernel[i%gaussKernel.length][j%gaussKernel.length];
 						}
-
 					}
 					Ures[x][y] = result;
 				}
@@ -317,7 +312,6 @@ public class FiltroGeneralizado {
 			+ String.valueOf(matresult[0].length) + "x"
 			+ String.valueOf(matresult[0][0].length) + "x");
 		return matresult;
-		//return imageMatrix;
 	}
 }
 
