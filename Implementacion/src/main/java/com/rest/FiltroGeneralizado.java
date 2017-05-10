@@ -24,8 +24,6 @@ public class FiltroGeneralizado {
 		//double [][][] matrix = getMatrix();
 		//double [][][] filtermatrix = filter(3,3,1,matrix);
 		//getFixedImage(filtermatrix);
-
-
 	}
 
 
@@ -34,13 +32,12 @@ public class FiltroGeneralizado {
 		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		Mat m = bufToMat(imagen);
 		double [][][] img = getMatrix(m);
-		double [][][] filtermatrix = filter(3,3,1,img);
+		double [][][] filtermatrix = filter(3,1,img);
 		Mat withfilter = getFixedImage(filtermatrix);
 		//System.out.println(withfilter.dump());
 		BufferedImage buffer = mat2BufferedImage(withfilter) ;
 		//BufferedImage buffer = matToBufferedImage50(withfilter);
 		//BufferedImage buffer = toBufferedImage2(toBufferedImage1(withfilter));
-
 		return buffer;
 	}
 
@@ -68,7 +65,6 @@ public class FiltroGeneralizado {
 		    final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 		    System.arraycopy(b, 0, targetPixels, 0, b.length);
 		    return image;
-
 		}
 
 
@@ -88,6 +84,7 @@ public class FiltroGeneralizado {
 	    return image;
 
 	}
+	
 	// convierte double[][][] to Mat
 	public static Mat getFixedImage(double[][][] matrix){
 		try {
@@ -112,15 +109,9 @@ public class FiltroGeneralizado {
 					destination.put(i, j, hola);
 					temp2[i][j] = destination.get(i, j)[0];
 					//temp[i][j] = temp2[i][];
-
-			//	System.out.println(destination.get(i, j).length);
+		        	//	System.out.println(destination.get(i, j).length);
 				}
 			}
-
-		//	Imgcodecs.imwrite("OJALASIRVA1.bmp", source);
-
-			//namedWindow("",43);
-	//	showImage(toBufferedImage2(toBufferedImage1(destination)));
 			Imgcodecs.imwrite("generado.png", destination);
 			return destination;
 
@@ -147,8 +138,7 @@ public class FiltroGeneralizado {
 
 	public static BufferedImage toBufferedImage2(Image img)
 	{
-	    if (img instanceof BufferedImage)
-	    {
+	    if (img instanceof BufferedImage) {
 	        return (BufferedImage) img;
 	    }
 
@@ -273,7 +263,7 @@ public class FiltroGeneralizado {
 	}
 
 
-	public static double[][][] filter(int K, int L, float sigma, double[][][] imageMatrix){
+	public static double[][][] filter(int K, float sigma, double[][][] imageMatrix){
 
 		// int L = 3, K = 3;
 		//int x = 2, y = 2;
@@ -306,12 +296,14 @@ public class FiltroGeneralizado {
 					int
 					xkmin = x-(int)Math.floor((K-1)/2),
 					xkmax = x+(int)Math.floor((K-1)/2),
-					ylmin = y-(int)Math.floor((L-1)/2),
-					ylmax = y+(int)Math.floor((L-1)/2);
+					ylmin = y-(int)Math.floor((K-1)/2),
+					ylmax = y+(int)Math.floor((K-1)/2);
 					// filtro
+					int o = 0;
 					for(int i=xkmin; i < xkmax+1; i++){			// se desliza F sobre U
 						for(int j=ylmin; j < ylmax+1; j++){
-							result += U[i][j] * gaussKernel[i%gaussKernel.length][j%gaussKernel.length];
+							//result += U[i+x][j+y] * gaussKernel[i][j];//i%gaussKernel.length
+						   result += U[i][j] * gaussKernel[i%gaussKernel.length][j%gaussKernel.length];
 						}
 
 					}
