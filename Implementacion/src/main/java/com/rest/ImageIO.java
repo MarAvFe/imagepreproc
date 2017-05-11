@@ -84,19 +84,19 @@ public class ImageIO {
 					case 1:
 						bridge = rest.FiltroGeneralizado.Bilateral(img,kSize,sigma,sigmaB);
 						break;
-					
+
 					default:
 						break;
 				}
-				
-				picoSenal = rest.FiltroGeneralizado.PicoSeñal(img, bridge);
+
+				picoSenal = rest.FiltroGeneralizado.PicoSenal(img, bridge);
 				result += encodeToString(bridge, imgType);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			output +=
 					"<h3>Image title:</h3> " + imgTitle
-					+ "<br><h3>Pico senal antes/despues:</h3> " + picoSenal 
+					+ "<br><h3>Pico senal antes/despues:</h3> " + picoSenal
 					+ "<br><h3>Image Type:</h3> " + imgType
 					+ "<br><h3>Processed img:</h3> <a download='img" + result.substring(result.length()-10) + "." + imgType + "' href='" + result + "' title='img" + result.substring(result.length()-10) + "'><img src=\"" + result + "\" /></a><hr>";
 					//"<br><h3>Recieved img:</h3> <img src=\"" + imgCode + "\" />" +

@@ -25,24 +25,24 @@ public class FiltroGeneralizado {
 	 * The main method.
 	 *
 	 * @param args the arguments
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void main( String[] args ) throws IOException{
-		
+
 		 BufferedImage image1 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\lena.jpg"));
 		 BufferedImage image2 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\Pruebaimgmat\\nueva25.png"));
-		 PicoSeñal(image1,image2);
+		 PicoSenal(image1,image2);
 	}
-	
-	public static double PicoSeñal(BufferedImage imagen1, BufferedImage imagen2) {
+
+	public static double PicoSenal(BufferedImage imagen1, BufferedImage imagen2) {
 		Mat m1=bufToMat(imagen1);
 		Mat m2 = bufToMat(imagen2);
 		double [][][] img1 = getMatrix(m1);
 		double [][][] img2 = getMatrix(m2);
-		double picoseñal = CalculaPicoSeñal(img1,img2);
-		return picoseñal;
+		double picosenal = CalculaPicoSenal(img1,img2);
+		return picosenal;
 	}
-	
+
 
 
 	public static BufferedImage principal(BufferedImage imagen, int pSize, int pSigma) {
@@ -53,7 +53,7 @@ public class FiltroGeneralizado {
 		BufferedImage buffer = mat2BufferedImage(withfilter) ;
 		return buffer;
 	}
-	
+
 	public static BufferedImage Bilateral(BufferedImage imagen, int pSize, int pSigma, int pSigma2) {
 		Mat m = bufToMat(imagen);
 		Mat dest = new Mat(m.rows(), m.cols(), m.type());
@@ -244,7 +244,7 @@ public class FiltroGeneralizado {
 			matresult[g] = Ures;
 		}
 		return matresult;
-	}	
+	}
 	 public static void bytes_array(String file_name, int array[][], int heigh, int width) {
 		    try {
 		      File file = new File(file_name);
@@ -253,10 +253,10 @@ public class FiltroGeneralizado {
 		       {
 		    	   for (int j=0; j<width; j++)
 		    	   {
-		    		   array[i][j] = (int)(0xFF & fin.read()); 
-		    	   }       	   
+		    		   array[i][j] = (int)(0xFF & fin.read());
+		    	   }
 		       }
-		         
+
 		      fin.close();
 		    }
 		    catch (Exception e) {
@@ -268,35 +268,35 @@ public class FiltroGeneralizado {
 	 public static double log10(double num) {
 		return Math.log(num)/Math.log(10);
 	 }
-	 
+
 	 public static double CalculateMSE(double[][][] imageMatrix1, double[][][] imageMatrix2){
-			double result; 
+			double result;
 			double mse = 0;
 			for(int g = 0; g<3;g++) {
 
 				double[][] U = imageMatrix1[g];
 				double[][] Y = imageMatrix2[g];
-				
+
 				result = 0;
-				
+
 				for(int i=0; i < U.length; i++){			// Eliminar los bordes
 					for(int j=0; j < U[0].length; j++){
 							result += (U[i][j] - Y[i][j]) * (U[i][j] - Y[i][j]);
 						}
 				}
-				 mse = result/(U.length*U[0].length); // Mean square error	        
-			    
+				 mse = result/(U.length*U[0].length); // Mean square error
+
 			}
 			 System.out.println("MSE: " + mse);
 			return mse;
 	}
-	 public static double CalculaPicoSeñal(double[][][] imageMatrix1, double[][][] imageMatrix2)
+	 public static double CalculaPicoSenal(double[][][] imageMatrix1, double[][][] imageMatrix2)
 	 {
 		 double mse = CalculateMSE(imageMatrix1, imageMatrix2);
 		 double psnr = 10*log10(255*255/mse);
 		 System.out.println("PSNR: " + psnr);
 		 return psnr;
 	 }
-	
-	
+
+
 }
