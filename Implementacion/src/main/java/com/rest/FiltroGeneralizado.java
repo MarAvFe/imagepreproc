@@ -2,9 +2,19 @@ package rest;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+
 import org.opencv.core.*;
 import org.opencv.imgcodecs.*;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Mat;
 
 /**
  * The Class FiltroGeneralizado.
@@ -15,10 +25,24 @@ public class FiltroGeneralizado {
 	 * The main method.
 	 *
 	 * @param args the arguments
+	 * @throws IOException 
 	 */
-	public static void main( String[] args ){
-
+	public static void main( String[] args ) throws IOException{
+		
+		 BufferedImage image1 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\lena.jpg"));
+		 BufferedImage image2 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\Pruebaimgmat\\nueva25.png"));
+		 PicoSeñal(image1,image2);
 	}
+	
+	public static double PicoSeñal(BufferedImage imagen1, BufferedImage imagen2) {
+		Mat m1=bufToMat(imagen1);
+		Mat m2 = bufToMat(imagen2);
+		double [][][] img1 = getMatrix(m1);
+		double [][][] img2 = getMatrix(m2);
+		double picoseñal = CalculaPicoSeñal(img1,img2);
+		return picoseñal;
+	}
+	
 
 
 	public static BufferedImage principal(BufferedImage imagen, int pSize, int pSigma) {
@@ -38,13 +62,13 @@ public class FiltroGeneralizado {
 		return buffer;
 	}
 
-
     /**
      * Se encarga de convertir un bufferedImage en un objeto de tipo Mat que es el que va a ser procesado.
      * @param img --> imagen de tipo bufferedImage
-     * @return se retorna una matriz
+     * @return se retorna un objeto de tipo Mat
      */
     public static Mat bufToMat(BufferedImage img){
+    	System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     	Mat mat = new Mat(img.getHeight(), img.getWidth(), CvType.CV_8UC3);
     	byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
     	mat.put(0, 0, pixels);
@@ -220,5 +244,59 @@ public class FiltroGeneralizado {
 			matresult[g] = Ures;
 		}
 		return matresult;
+	}	
+	 public static void bytes_array(String file_name, int array[][], int heigh, int width) {
+		    try {
+		      File file = new File(file_name);
+		      FileInputStream fin= new FileInputStream(file);
+		       for (int i=0; i<heigh; i++)
+		       {
+		    	   for (int j=0; j<width; j++)
+		    	   {
+		    		   array[i][j] = (int)(0xFF & fin.read()); 
+		    	   }       	   
+		       }
+		         
+		      fin.close();
+		    }
+		    catch (Exception e) {
+		      System.out.println(e.getMessage());
+		      System.exit(0);
+		    }
+		  }
+
+	 public static double log10(double num) {
+		return Math.log(num)/Math.log(10);
+	 }
+	 
+	 public static double CalculateMSE(double[][][] imageMatrix1, double[][][] imageMatrix2){
+			double result; 
+			double mse = 0;
+			for(int g = 0; g<3;g++) {
+
+				double[][] U = imageMatrix1[g];
+				double[][] Y = imageMatrix2[g];
+				
+				result = 0;
+				
+				for(int i=0; i < U.length; i++){			// Eliminar los bordes
+					for(int j=0; j < U[0].length; j++){
+							result += (U[i][j] - Y[i][j]) * (U[i][j] - Y[i][j]);
+						}
+				}
+				 mse = result/(U.length*U[0].length); // Mean square error	        
+			    
+			}
+			 System.out.println("MSE: " + mse);
+			return mse;
 	}
+	 public static double CalculaPicoSeñal(double[][][] imageMatrix1, double[][][] imageMatrix2)
+	 {
+		 double mse = CalculateMSE(imageMatrix1, imageMatrix2);
+		 double psnr = 10*log10(255*255/mse);
+		 System.out.println("PSNR: " + psnr);
+		 return psnr;
+	 }
+	
+	
 }

@@ -50,6 +50,7 @@ public class ImageIO {
 			@FormParam("sigmaGauss") int sigma,
 			@FormParam("sigmaBilateral") int sigmaB,
 			@FormParam("kernelSize") int kSize,
+			@FormParam("PicoSenal") double picoSenal,
 			@FormParam("imgTitle") String imgTitle) {
 		String[] imgs = imgCode.split("0o0o0o0");
 		String output = "<html><body>";
@@ -75,6 +76,7 @@ public class ImageIO {
 
 				// Trabajar con la imagen
 				BufferedImage bridge = rest.FiltroGeneralizado.principal(img, kSize, sigma);
+				//double pico;
 				switch(algType){
 					case 0:
 						bridge = rest.FiltroGeneralizado.principal(img, kSize, sigma);
@@ -82,18 +84,21 @@ public class ImageIO {
 					case 1:
 						bridge = rest.FiltroGeneralizado.Bilateral(img,kSize,sigma,sigmaB);
 						break;
+					
 					default:
 						break;
 				}
-
+				
+				picoSenal = rest.FiltroGeneralizado.PicoSeñal(img, bridge);
 				result += encodeToString(bridge, imgType);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			output +=
 					"<h3>Image title:</h3> " + imgTitle
+					+ "<br><h3>Pico senal antes/despues:</h3> " + picoSenal 
 					+ "<br><h3>Image Type:</h3> " + imgType
-					+ "<br><h3>Processed img:</h3> <img src=\"" + result + "\" /><hr>";
+					+ "<br><h3>Processed img:</h3> <a download='img" + result.substring(result.length()-10) + "." + imgType + "' href='" + result + "' title='img" + result.substring(result.length()-10) + "'><img src=\"" + result + "\" /></a><hr>";
 					//"<br><h3>Recieved img:</h3> <img src=\"" + imgCode + "\" />" +
 				//"<br><h3>Correct DecodeEncode:</h3> " + String.valueOf(imgCode.equals(result)) +
 				//"<br><h3>DecodeEncode Result:</h3> " + result +
