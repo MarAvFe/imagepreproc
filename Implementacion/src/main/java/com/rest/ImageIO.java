@@ -6,6 +6,9 @@ import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -54,6 +57,7 @@ public class ImageIO {
 			@FormParam("imgTitle") String imgTitle) {
 		String[] imgs = imgCode.split("0o0o0o0");
 		String output = "<html><body>";
+		long end = 0, start = System.currentTimeMillis();
 		for (int i = 0; i < imgs.length; i++){
 			String imgType = imgs[i].split(",")[0].split("/")[1].split(";")[0];
 			String base64Image = imgs[i].split(",")[1];
@@ -94,6 +98,7 @@ public class ImageIO {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			end = System.currentTimeMillis();
 			output +=
 					"<h3>Image title:</h3> " + imgTitle
 					+ "<br><h3>Pico senal antes/despues:</h3> " + picoSenal
@@ -107,6 +112,16 @@ public class ImageIO {
 				// + "<br><h3>Received Image Code:</h3> " + imgCode ;
 			//showImage(img);
 		}
+		Date d = new Date(end-start);
+		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+		calendar.setTime(d);   // assigns calendar to given date
+		int m = calendar.get(Calendar.MINUTE);
+		int s = calendar.get(Calendar.SECOND);
+		String strM = m < 10 ? "0" + String.valueOf(m):String.valueOf(m);
+		String strS = s < 10 ? "0" + String.valueOf(s):String.valueOf(s);
+		output += "Processing time: "
+			+ strM
+			+ ":" + strS;
 		output += "</html></body>";
 		return Response.status(200).entity(output).build();
 	}
