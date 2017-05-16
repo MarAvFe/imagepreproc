@@ -34,6 +34,7 @@ public class FiltroGeneralizado {
 		 PicoSenal(image1,image2);
 	}
 
+	//esta función calcula el número pico señal entre dos imágenes, una con ruido y otra con ruido artificial
 	public static double PicoSenal(BufferedImage imagen1, BufferedImage imagen2) {
 		Mat m1=bufToMat(imagen1);
 		Mat m2 = bufToMat(imagen2);
@@ -44,7 +45,7 @@ public class FiltroGeneralizado {
 	}
 
 
-
+    //en esta función se hace todo el procedimiento para aplicar el filtro gaussiano
 	public static BufferedImage principal(BufferedImage imagen, int pSize, int pSigma) {
 		Mat m = bufToMat(imagen);
 		double [][][] img = getMatrix(m);
@@ -54,6 +55,7 @@ public class FiltroGeneralizado {
 		return buffer;
 	}
 
+	//en esta funcion aplicamos el filtro bilateral y todo su procesimiento
 	public static BufferedImage Bilateral(BufferedImage imagen, int pSize, int pSigma, int pSigma2) {
 		Mat m = bufToMat(imagen);
 		Mat dest = new Mat(m.rows(), m.cols(), m.type());
