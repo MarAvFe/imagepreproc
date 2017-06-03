@@ -83,9 +83,11 @@ public class ImageIO {
 				//double pico;
 				switch(algType){
 					case 0:
+					// Aplicar histograma
 						bridge = rest.FiltroGeneralizado.principal(img, kSize, sigma);
 						break;
 					case 1:
+					// Aplicar histograma
 						bridge = rest.FiltroGeneralizado.Bilateral(img,kSize,sigma,sigmaB);
 						break;
 
@@ -103,8 +105,14 @@ public class ImageIO {
 					"<h3>Image title:</h3> " + imgTitle
 					+ "<br><h3>Pico senal antes/despues:</h3> " + picoSenal
 					+ "<br><h3>Image Type:</h3> " + imgType
-					+ "<br><h3>Processed img:</h3> <a download='img" + result.substring(result.length()-10) + "." + imgType + "' href='" + result + "' title='img" + result.substring(result.length()-10) + "'><img src=\"" + result + "\" /></a><hr>";
-					//"<br><h3>Recieved img:</h3> <img src=\"" + imgCode + "\" />" +
+					+ "<br><h3>Processed img:</h3> "
+					+"<a download='img" + result.substring(result.length()-10) + "." + imgType
+						+ "' href='" + imgCode + "' title='img" + result.substring(result.length()-10) 
+						+ "'><img src=\"" + imgCode + "\" /></a>"
+					+"<a download='img" + result.substring(result.length()-10) + "." + imgType
+						+ "' href='" + result + "' title='img" + result.substring(result.length()-10)
+						+ "'><img src=\"" + result + "\" /></a><hr>";
+						//"<br><h3>Recieved img:</h3> <img src=\"" + imgCode + "\" />" +
 				//"<br><h3>Correct DecodeEncode:</h3> " + String.valueOf(imgCode.equals(result)) +
 				//"<br><h3>DecodeEncode Result:</h3> " + result +
 				//"<br><h3>Image Only:</h3> " + base64Image +
@@ -122,7 +130,7 @@ public class ImageIO {
 		output += "Processing time: "
 			+ strM
 			+ ":" + strS;
-		output += "</html></body>";
+		output += "</body></html>";
 		return Response.status(200).entity(output).build();
 	}
 
