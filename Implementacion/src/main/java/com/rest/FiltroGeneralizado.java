@@ -10,11 +10,16 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
+import org.junit.Test;
+//import org.junit.Test;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.*;
+import org.opencv.imgproc.CLAHE;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.core.Mat;
 
 /**
  * The Class FiltroGeneralizado.
@@ -29,11 +34,12 @@ public class FiltroGeneralizado {
 	 */
 	public static void main( String[] args ) throws IOException{
 
-		 BufferedImage image1 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\lena.jpg"));
-		 BufferedImage image2 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\Pruebaimgmat\\nueva25.png"));
-		 PicoSenal(image1,image2);
+		// BufferedImage image1 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\lena.jpg"));
+	//	 BufferedImage image2 = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\Pruebaimgmat\\nueva25.png"));
+		// PicoSenal(image1,image2);
 	}
 
+	//esta función calcula el número pico señal entre dos imágenes, una con ruido y otra con ruido artificial
 	public static double PicoSenal(BufferedImage imagen1, BufferedImage imagen2) {
 		Mat m1=bufToMat(imagen1);
 		Mat m2 = bufToMat(imagen2);
@@ -43,23 +49,80 @@ public class FiltroGeneralizado {
 		return picosenal;
 	}
 
+	
 
-
+    //en esta función se hace todo el procedimiento para aplicar el filtro gaussiano
 	public static BufferedImage principal(BufferedImage imagen, int pSize, int pSigma) {
 		Mat m = bufToMat(imagen);
+	//	m = HistogramEqualizationColorGray(m);
 		double [][][] img = getMatrix(m);
 		double [][][] filtermatrix = filter(pSize,pSigma,img);
 		Mat withfilter = getFixedImage(filtermatrix);
+	
 		BufferedImage buffer = mat2BufferedImage(withfilter) ;
 		return buffer;
 	}
 
+	@Test
+	public void showImageTest() throws InterruptedException {
+		 
+	   FiltroGeneralizado.showImage("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\lena.jpg");	 
+	}
+
+	
+	@Test
+	public void MatToBufTest() {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Mat source = Imgcodecs.imread("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\lena.jpg");
+		FiltroGeneralizado.mat2BufferedImage(source);
+	}
+	
+	@Test
+	public void bufToMatTest() throws IOException {
+	
+	
+		BufferedImage img;
+		img = ImageIO.read(new File("C:\\Users\\kimco\\Dropbox\\Archivos de proyecto\\input\\groundtruth\\ojo_original.png"));
+				
+		FiltroGeneralizado.bufToMat(img);
+	}
+	
+	@Test
+	public void GaussTest() throws IOException {
+		BufferedImage img;
+		img = ImageIO.read(new File("C:\\Users\\kimco\\workspace\\EcualizacionHistograma\\lena.jpg"));
+		FiltroGeneralizado.principal(img, 3, 3);
+	}
+	
+	//en esta funcion aplicamos el filtro bilateral y todo su procesimiento
 	public static BufferedImage Bilateral(BufferedImage imagen, int pSize, int pSigma, int pSigma2) {
 		Mat m = bufToMat(imagen);
+	//	m = HistogramEqualizationColorGray(m);
 		Mat dest = new Mat(m.rows(), m.cols(), m.type());
 		Imgproc.bilateralFilter(m, dest, pSize, pSigma, pSigma2);
 		BufferedImage buffer = mat2BufferedImage(dest) ;
 		return buffer;
+	}
+	
+	public static void showImage(String path) throws InterruptedException {
+		 JFrame frame = new JFrame();
+		  ImageIcon icon = new ImageIcon(path);
+		  JLabel label = new JLabel(icon);
+		  frame.add(label);
+		  frame.setDefaultCloseOperation
+		         (JFrame.EXIT_ON_CLOSE);
+		  frame.pack();
+		  Thread.sleep(6000);
+		  frame.setVisible(true);
+		  Thread.sleep(6000);
+	}
+	public static Mat HistogramEqualizationColorGray(Mat image) {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		Imgproc.cvtColor(image, image,  Imgproc.COLOR_BGR2GRAY); //se pasa la imagen a escala de grises 
+		// convertir en escala de grises y ecualizar histograma
+		CLAHE clahe = Imgproc.createCLAHE(); //creamos el objeto de tipo clahe /
+		clahe.apply(image, image); //aplicamos el acualizador con el metodo apply
+		return image;
 	}
 
     /**

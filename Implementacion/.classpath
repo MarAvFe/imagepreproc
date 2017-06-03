@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java/com"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenCV-3.2.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenCV 3.2"/>
+	<classpathentry kind="lib" path="C:/Users/kimco/Downloads/eclipse-java-oxygen-M5-win32-x86_64/eclipse/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
